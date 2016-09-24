@@ -15,30 +15,29 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedNativeQuery;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotNull;
 
 @Entity
-@NamedNativeQuery(name = "Manufacturer.getAllThatSellAcoustics", 
-		query = "SELECT m.id, m.name, m.foundedDate, m.averageYearlySales, m.location_id as headquarters_id, m.active "
-	    + "FROM Manufacturer m "
-		+ "LEFT JOIN Model mod ON (m.id = mod.manufacturer_id) "
+@NamedNativeQuery(name = "Manufacturer.getAllThatSellAcoustics", query = "SELECT m.id, m.name, m.foundedDate, m.averageYearlySales, m.location_id as headquarters_id, m.active "
+		+ "FROM Manufacturer m " + "LEFT JOIN Model mod ON (m.id = mod.manufacturer_id) "
 		+ "LEFT JOIN ModelType mt ON (mt.id = mod.modeltype_id) "
-	    + "WHERE (mt.name = ?)", resultClass = Manufacturer.class)
+		+ "WHERE (mt.name = ?)", resultClass = Manufacturer.class)
 public class Manufacturer {
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-
+	@NotNull
 	private String name;
 
-	@Column(name="FOUNDEDDATE")
+	@Column(name = "FOUNDEDDATE")
 	private Date foundedDate;
 
-	@Column(name="AVERAGEYEARLYSALES")
+	@Column(name = "AVERAGEYEARLYSALES")
 	private BigDecimal averageYearlySales;
 	private Boolean active;
-	
-	@OneToMany(cascade=CascadeType.ALL)
-	@JoinColumn(name="manufacturer_id")
+
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "manufacturer_id")
 	private List<Model> models = new ArrayList<Model>();
 
 	@ManyToOne
